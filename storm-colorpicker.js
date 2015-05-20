@@ -40,6 +40,11 @@
     },
     hasClass: function (className, obj) {
       return !!obj.classList.indexOf(className);
+    },
+    convertTo100percent: function(relNum) {
+      return function(num) {
+        return Math.round(100 / relNum * num);
+      }
     }
   };
 
@@ -49,6 +54,7 @@
     this.canvas = document.querySelectorAll(canvasEl)[0];
     this.context = this.canvas.getContext('2d');
     this.mouseDown = false;
+    this.c255to100 = utils.convertTo100percent(255);
     this.initColorWheel();
     this.initEvents();
   }
@@ -87,17 +93,19 @@
   };
 
   StormColorPicker.prototype.getPixelAt = function(x, y) {
+    var self = this;
+
     if (arguments.length == 1 && typeof arguments == 'object') {
       y = x.y;
       x = x.x;
     }
-    var pixel = this.context.getImageData(x, y, 1, 1).data;
+    var pixel = self.context.getImageData(x, y, 1, 1).data;
 
     return {
       r: pixel[0] || 0,
       g: pixel[1] || 0,
       b: pixel[2] || 0,
-      a: Math.floor(100 / 255 * (pixel[3] || 0 )) // percents
+      a: self.c255to100(pixel[3] || 0)
     };
   };
 
