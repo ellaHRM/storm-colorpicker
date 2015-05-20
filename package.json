@@ -1,0 +1,25 @@
+{
+  "name": "storm-colorpicker",
+  "version": "0.0.1",
+  "description": "Modern colorpicker plugin inspired by PHPStorm IDE",
+  "main": "storm-colorpicker.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/likerRr/storm-colorpicker.git"
+  },
+  "keywords": [
+    "colorpicker",
+    "palette",
+    "color",
+    "canvas"
+  ],
+  "author": "Alexey Lizurchik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/likerRr/storm-colorpicker/issues"
+  },
+  "homepage": "https://github.com/likerRr/storm-colorpicker"
+}
