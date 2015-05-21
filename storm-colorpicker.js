@@ -244,6 +244,7 @@
 
     document.addEventListener('mouseup', eventBus.onSelectEnds);
     document.addEventListener('mousemove', eventBus.onCursorMoves);
+    document.addEventListener('mousemove', eventBus.onSelecting);
 
     self.picker.valueOf().addEventListener('mouseup', eventBus.onSelectEnds);
     self.picker.valueOf().addEventListener('mousemove', eventBus.onSelecting);
@@ -251,10 +252,7 @@
 
     self.image.addEventListener('load', eventBus.onImageLoads);
 
-    //self.canvas.addEventListener('mousedown', eventBus.onSelectStarts);
-    document.addEventListener('mousedown', eventBus.onSelectStarts);
-    //self.canvas.addEventListener('mousemove', eventBus.onSelecting);
-    document.addEventListener('mousemove', eventBus.onSelecting);
+    self.canvas.addEventListener('mousedown', eventBus.onSelectStarts);
   };
 
   ColorWheel.prototype.getCursorPos = function() {
