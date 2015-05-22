@@ -15,13 +15,17 @@
   <script src="storm-colorpicker.js"></script>
 </head>
 <body>
-<div style="width: 300px; height: 300px;"></div>
+<div id="colors" style="width: 300px; height: 300px;"></div>
 <!--<img src="cursor.png" alt=""/>-->
 <canvas width="300" height="300"></canvas>
 <script>
   var picker = new StormColorPicker('canvas');
   picker.on('pick', function (color) {
     document.body.style.background = color.rgba;
+  });
+  picker.on('pick', function (color) {
+    var colors = document.getElementById('colors');
+    colors.innerHTML = 'rgba: ' + color.rgba + '<br>hex: ' + color.hex;
   });
 </script>
 </body>

@@ -197,6 +197,10 @@
        y = y1 + r*(y2-y1)/L
        this.picker.move(x, y);
        */
+      var L = Math.sqrt(Math.pow(outerMiddle.x - this.cursorPos.x, 2) + Math.pow(outerMiddle.y - this.cursorPos.y, 2));
+      var iX = this.cursorPos.x + (150*(outerMiddle.x-this.cursorPos.x) / L);
+      var iY = this.cursorPos.y + (150*(outerMiddle.y-this.cursorPos.y) / L);
+      console.log(iX, iY);
     }
 
     // check for alpha > 0
@@ -352,6 +356,11 @@
     return this.cursorImage;
   };
 
+  /**
+   *
+   * @param canvasEl
+   * @constructor
+   */
   function StormColorPicker(canvasEl) {
     this.canvas = document.querySelectorAll(canvasEl)[0];
     this.context2d = this.canvas.getContext('2d');
@@ -369,6 +378,11 @@
     this.setupCanvas();
   }
 
+  /**
+   * Event subscriber
+   * @param evt
+   * @param fn
+   */
   StormColorPicker.prototype.on = function(evt, fn) {
     if (evt in this.apiSubscribers !== -1) {
       this.apiSubscribers[evt].push(fn);
