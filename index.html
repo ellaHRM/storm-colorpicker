@@ -5,7 +5,7 @@
   <title></title>
   <style>
     body {
-      color: #000000;
+      color: hsl(331, 100%, 66%);
     }
     canvas {
       margin-left: 300px;
@@ -15,9 +15,8 @@
   <script src="storm-colorpicker.js"></script>
 </head>
 <body>
-<div id="colors" style="width: 300px; height: 300px;"></div>
-<!--<img src="cursor.png" alt=""/>-->
-<canvas width="300" height="300"></canvas>
+<div id="colors" style="width: 300px; height: 30px;"></div>
+<canvas id="storm-picker" width="300" height="300"></canvas>
 <script>
   var picker = new StormColorPicker('canvas');
   picker.on('pick', function (color) {
