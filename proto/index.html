@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+
+<div>
+  <input id="lightness" type="range" step="1" max="255" min="0" value="255">
+</div>
+<canvas width="300" height="300"></canvas>
+<div id="result1"></div>
+<div id="result2"></div>
+
+<script>
+  var rnd = Math.random() * Date.now();
+  document.write('<script src="/proto/test.js?'+rnd+'"><\/script>');
+  document.write('<script src="/build/storm-colorpicker.js?'+rnd+'"><\/script>');
+</script>
+
+</body>
+</html>
