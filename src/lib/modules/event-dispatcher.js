@@ -36,9 +36,8 @@ function SCPEventDispatcher() {
      * Dispatches @evt
      * @param evt
      * @param (args)
-     * @returns {dispatch}
      */
-    dispatch: function (evt, args) {
+    toggle: function (evt, args) {
       var fnArgs = Array.prototype.slice.call(arguments, 1);
       if (SCP.utils.isString(evt)) {
         evt = evt.trim();
@@ -50,9 +49,6 @@ function SCPEventDispatcher() {
           }
         });
       }
-
-      return this;
-
     }
   };
 

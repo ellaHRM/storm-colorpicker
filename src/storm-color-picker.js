@@ -19,6 +19,8 @@
 
   //= include ./lib/utils.js
   //= include ./lib/modules/error.js
+  //= include ./lib/modules/recent-colors.js
+  //= include ./lib/modules/template.js
   //= include ./lib/modules/event-dispatcher.js
   //= include ./lib/modules/color-wheel.js
 
@@ -51,27 +53,27 @@
     self.recent = new SCPRecentColors();
 
     scpColorWheel.on(SCP.evt.SELECT, function () {
-      self.dispatch(SCP.evt.SELECT);
+      self.toggle(SCP.evt.SELECT);
     });
 
     scpColorWheel.on(SCP.evt.SELECTING, function () {
-      self.dispatch(SCP.evt.SELECTING);
+      self.toggle(SCP.evt.SELECTING);
     });
 
     self.template.on(SCP.evt.BEFORE_SHOW, function() {
-      self.dispatch(SCP.evt.BEFORE_SHOW);
+      self.toggle(SCP.evt.BEFORE_SHOW);
     });
 
     self.template.on(SCP.evt.AFTER_SHOW, function () {
-      self.dispatch(SCP.evt.AFTER_SHOW);
+      self.toggle(SCP.evt.AFTER_SHOW);
     });
 
     self.template.on(SCP.evt.BEFORE_CLOSE, function () {
-      self.dispatch(SCP.evt.BEFORE_CLOSE);
+      self.toggle(SCP.evt.BEFORE_CLOSE);
     });
 
     self.template.on(SCP.evt.AFTER_CLOSE, function () {
-      self.dispatch(SCP.evt.AFTER_CLOSE);
+      self.toggle(SCP.evt.AFTER_CLOSE);
     });
   }
   StormColorPicker.prototype = new SCPEventDispatcher();

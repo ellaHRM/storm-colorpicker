@@ -29,21 +29,30 @@ SCP.utils.findElement = function (selector) {
 };
 
 /**
- * Returns true if @obj is string
- * @param obj
+ * Returns true if @obj is String
+ * @param str
  * @returns {boolean}
  */
-SCP.utils.isString = function(obj) {
-  return 'string' === typeof obj;
+SCP.utils.isString = function(str) {
+  return 'string' === typeof str;
 };
 
 /**
- * Returns true if @fn is function
+ * Returns true if @fn is Function
  * @param fn
  * @returns {boolean}
  */
 SCP.utils.isFunction = function (fn) {
   return 'function' === typeof fn;
+};
+
+/**
+ * Returns true if @obj is Object
+ * @param obj
+ * @returns {boolean}
+ */
+SCP.utils.isObject = function (obj) {
+  return 'object' === typeof obj;
 };
 
 /**
