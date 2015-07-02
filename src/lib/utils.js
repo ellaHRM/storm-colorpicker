@@ -25,7 +25,7 @@ SCP.utils.findElement = function (selector) {
     return el;
   }
 
-  throw new SCPError('Element "' + selector + '" not found on the page');
+  throw new SCPError(SCP.errMsg.EL_NOT_FOUND_ON_PAGE, [selector]);
 };
 
 /**
@@ -33,7 +33,7 @@ SCP.utils.findElement = function (selector) {
  * @param str
  * @returns {boolean}
  */
-SCP.utils.isString = function(str) {
+SCP.utils.isStr = function(str) {
   return 'string' === typeof str;
 };
 
@@ -42,7 +42,7 @@ SCP.utils.isString = function(str) {
  * @param fn
  * @returns {boolean}
  */
-SCP.utils.isFunction = function (fn) {
+SCP.utils.isFunc = function (fn) {
   return 'function' === typeof fn;
 };
 
@@ -51,7 +51,7 @@ SCP.utils.isFunction = function (fn) {
  * @param obj
  * @returns {boolean}
  */
-SCP.utils.isObject = function (obj) {
+SCP.utils.isObj = function (obj) {
   return 'object' === typeof obj;
 };
 
@@ -65,12 +65,39 @@ SCP.utils.extends = function(parent, child) {
     k;
 
   children.map(function(child) {
-    for (k in child) {
-      if (parent.hasOwnProperty(k)) {
-        parent[k] = child[k];
-      }
-    }
+    SCP.utils.mapObj(child, function(childVal) {
+      parent[k] = childVal;
+    });
   });
 };
+
+/**
+ * Iterates throw own properties of @obj, calls @fn if defined.
+ * @param obj
+ * @param {mapObjFn} fn
+ * @param fnContext - custom context
+ */
+SCP.utils.mapObj = function(obj, fn, fnContext) {
+  var i = 0,
+    prop;
+
+  if (SCP.utils.isObj(obj)) {
+    for (prop in obj) {
+      if (obj.hasOwnProperty(prop) && SCP.utils.isFunc(fn)) {
+        fnContext ? fn.call(fnContext, obj[prop], prop, obj, i) : fn(obj[prop], prop, obj, i);
+        i++;
+      }
+    }
+  }
+};
+
+/**
+ * Calls on each own object's property
+ * @callback mapObjFn
+ * @param {*} value
+ * @param {String} propertyName
+ * @param {Object} object
+ * @param {Number} iterator
+ */
 
 // end lib/utils.js

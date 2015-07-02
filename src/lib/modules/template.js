@@ -41,15 +41,37 @@ function SCPTemplate() {
 
   self.addTheme = function(tName, config) {
     tName = tName.trim();
-    if (!tName) throw new SCPError('Invalid theme name');
+    if (!tName) throw new SCPError(SCP.errMsg.INVALID_THEME_NAME);
 
     themes[tName] = {
       bgColor: config.bgColor || themes[defaults.theme].bgColor
     };
   };
 
+  self.configTheme = function(tName, property, value) {
+    if (themes.hasOwnProperty(tName)) {
+      if (arguments.length === 2 && SCP.utils.isObj(property)) {
+        SCP.utils.mapObj(property, function(propVal, propName) {
+          themes[tName][propName] = propVal;
+        });
+      } else if (arguments.length === 3) {
+        themes[tName][property] = value;
+      }
+    }
+  };
+
+  self.build = function() {
+
+  };
+
+  self.render = function($container) {
+
+  };
+
   self.theme = self.getTheme(defaults.theme);
   self.size = self.getSize(defaults.size);
+  self.$tpl = '';
+  self.colorWheel = new SCPColorWheel();
 }
 SCPTemplate.prototype = new SCPEventDispatcher();
 

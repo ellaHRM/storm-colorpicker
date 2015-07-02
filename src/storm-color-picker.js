@@ -19,6 +19,7 @@
 
   //= include ./lib/utils.js
   //= include ./lib/modules/error.js
+  //= include ./lib/modules/err-msg.js
   //= include ./lib/modules/recent-colors.js
   //= include ./lib/modules/template.js
   //= include ./lib/modules/event-dispatcher.js

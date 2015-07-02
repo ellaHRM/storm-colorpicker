@@ -18,8 +18,8 @@ function SCPEventDispatcher() {
      * @returns {on}
      */
     on: function (evt, fn) {
-      if (!SCP.utils.isString(evt) || !SCP.utils.isFunction(fn)) {
-        throw new SCPError('Event name must be a string and handler must be a callable function');
+      if (!SCP.utils.isStr(evt) || !SCP.utils.isFunc(fn)) {
+        throw new SCPError(SCP.errMsg.INVALID_EVENT_DECLARATION);
       }
 
       evt = evt.trim();
@@ -39,7 +39,7 @@ function SCPEventDispatcher() {
      */
     toggle: function (evt, args) {
       var fnArgs = Array.prototype.slice.call(arguments, 1);
-      if (SCP.utils.isString(evt)) {
+      if (SCP.utils.isStr(evt)) {
         evt = evt.trim();
         evt.split(' ').map(function (ev) {
           if (events.hasOwnProperty(ev)) {
