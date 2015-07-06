@@ -3,7 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
-  <link rel="stylesheet" href="template.css"/>
+  <script>
+    document.write('<link rel="stylesheet" href="template.css?'+Math.random()+'"/>');
+  </script>
 </head>
 <body>
   <section class="color-picker cp-medium cp-embedded cp-theme-dark">
@@ -41,9 +43,9 @@
       <div class="cp-color-wheel">
 
       </div>
-      <!--<div class="cp-slider-right cp-slider">-->
+      <div class="cp-slider-right cp-slider">
         <input type="range" orient="vertical"/>
-      <!--</div>-->
+      </div>
       <div class="cp-slider-bottom cp-slider">
         <input type="range" orient="horizontal"/>
       </div>
@@ -56,6 +58,6 @@
       </section>
     </footer>
   </section>
-hell oworld
+hello world
 </body>
 </html>

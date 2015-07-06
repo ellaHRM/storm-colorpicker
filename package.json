@@ -26,6 +26,7 @@
     "chai": "^3.0.0",
     "gulp": "^3.9.0",
     "gulp-include": "^1.1.1",
+    "gulp-less": "^3.0.3",
     "gulp-mocha": "^2.1.2",
     "gulp-mocha-phantomjs": "^0.6.1",
     "mocha": "^2.2.5"
