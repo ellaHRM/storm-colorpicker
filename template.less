@@ -1,0 +1,218 @@
+@defaultDisplay: inline-block;
+@defaultOffset: 20px;
+// medium
+@mediumHeight: 500px;
+@mediumWidth: 350px;
+@wheelMediumHeight: 300px;
+@wheelMediumWeight: 300px;
+// end medium
+@thumbHeight: 36px;
+@thumbWidth: 16px;
+@trackWidth: 300px;
+
+.color-picker {
+
+  * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+
+  &.cp-theme-dark {
+    //background: #3C3F41;
+    color: #BABABA;
+
+    .cp-color-scheme {
+
+      .cp-color-scheme-block {
+
+        .cp-color-scheme-block-part,
+        .cp-color-scheme-selector,
+        .cp-color-scheme-block-part-hex {
+          border: solid #646464 1px;
+          background: #45494A;
+          color: #BABABA;
+        }
+
+      }
+    }
+
+  }
+
+  // common
+  display: @defaultDisplay;
+  padding: @defaultOffset @defaultOffset;
+  // end common
+
+  // positions
+  &.cp-embedded {
+    position: relative;
+  }
+  &.cp-sticky {
+    position: fixed;
+  }
+  // end positions
+
+  // visible flow
+  &.cp-visible {
+    display: @defaultDisplay;
+  }
+  &.cp-hidden {
+    display: none;
+  }
+  // end visible flow
+
+  .cp-color-selector {
+    .cp-color-wheel {
+      display: inline-block;
+      position: relative;
+      top: 0;
+      left: 0;
+      border: solid black 1px;
+      border-radius: @wheelMediumWeight;
+    }
+
+    .cp-slider {
+      //display: inline-block;
+    }
+  }
+
+  // medium size
+  &.cp-medium {
+    width: @mediumWidth;
+    height: @mediumHeight;
+
+    .cp-color-scheme {
+      margin-bottom: @defaultOffset;
+
+      .cp-color-scheme-block {
+        display: inline-block;
+        vertical-align: middle;
+
+        input,
+        select {
+          height: 20px;
+          padding: 2px;
+        }
+
+        .cp-color-scheme-block-part {
+          width: 30px;
+        }
+
+        .cp-color-scheme-block-part-hex {
+          width: 70px;
+        }
+      }
+    }
+
+    .cp-color-selector {
+      .cp-color-wheel {
+        width: @wheelMediumWeight;
+        height: @wheelMediumHeight;
+      }
+
+      .cp-slider-right > input[type="range"] {
+        //-webkit-transform: rotate(270deg);
+        //-moz-transform: rotate(270deg);
+        //-ms-transform: rotate(270deg);
+        //-o-transform: rotate(270deg);
+        //transform: rotate(270deg);
+
+      }
+
+      .cp-slider {
+
+      }
+
+      //.cp-slider > input[type="range"] {
+      //  width: @wheelMediumWeight;
+      //  height: 12px;
+      //  border: 1px solid #e6e6e6;
+      //  background-color: #e6e6e6;
+      //  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e6e6e6), to(#000000));
+      //  background-image: -webkit-linear-gradient(right, #e6e6e6, #000000);
+      //  background-image: -moz-linear-gradient(right, #e6e6e6, #000000);
+      //  background-image: -ms-linear-gradient(right, #e6e6e6, #000000);
+      //  background-image: -o-linear-gradient(right, #e6e6e6, #000000);
+      //}
+      //
+      //.cp-slider-right > input[type="range"] {
+      //  -webkit-transform: rotate(270deg);
+      //  -moz-transform: rotate(270deg);
+      //  -ms-transform: rotate(270deg);
+      //  -o-transform: rotate(270deg);
+      //  transform: rotate(270deg);
+      //  margin-left: @defaultOffset;
+      //}
+      //
+      //.cp-slider-bottom > input[type="range"] {
+      //  margin-top: @defaultOffset;
+      //}
+    }
+
+  }
+  // end medium size
+
+  //// input range
+  //// basic override
+  //input[type=range] {
+  //  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  //  width: 100%; /* Specific width is required for Firefox. */
+  //}
+  //
+  //input[type=range]:focus {
+  //  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+  //}
+  //// end basic override
+  //
+  //// thumb
+  ///* Special styling for WebKit/Blink */
+  //input[type=range]::-webkit-slider-thumb {
+  //  -webkit-appearance: none;
+  //  border-radius: 3px;
+  //  background: transparent;
+  //  cursor: pointer;
+  //
+  //  margin-top: -15px;
+  //  width: 0;
+  //  height: 0;
+  //  border-left: 8px solid transparent;
+  //  border-right: 8px solid transparent;
+  //  border-top: 16px solid #983301;
+  //}
+  //
+  ///* All the same stuff for Firefox */
+  //input[type=range]::-moz-range-thumb {
+  //  border-radius: 3px;
+  //  background: transparent;
+  //  cursor: pointer;
+  //
+  //  margin-top: -15px;
+  //  width: 0;
+  //  height: 0;
+  //  border-left: 8px solid transparent;
+  //  border-right: 8px solid transparent;
+  //  border-top: 16px solid #983301;
+  //}
+  //// end thumb
+
+  // end input range override
+}
+
+input[type=range][orient=vertical] {
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
+  width: 20px;
+  height: @trackWidth;
+  padding: 0 5px;
+}
+
+input[type=range][orient=horizontal] {
+  width: @trackWidth;
+  height: 20px;
+  padding: 0 5px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}

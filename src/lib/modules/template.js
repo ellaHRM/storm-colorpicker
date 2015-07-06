@@ -1,5 +1,9 @@
 // lib/modules/template.js
 
+/**
+ * Template class
+ * @constructor
+ */
 function SCPTemplate() {
   SCPEventDispatcher.call(this);
 
@@ -31,15 +35,40 @@ function SCPTemplate() {
       }
     };
 
-  self.getSize = function(size) {
+  /**
+   * Returns size obj
+   * @param size
+   * @returns {*}
+   */
+  self.getSize = function (size) {
     return (sizes.hasOwnProperty(size)) ? sizes[size] : sizes[defaults.size];
   };
 
-  self.getTheme = function(tName) {
+  /**
+   * Set template's size
+   * @param size
+   */
+  self.setSize = function (size) {
+    if (sizes.hasOwnProperty(size)) {
+      self.size = self.getSize(sizes[size]);
+    }
+  };
+
+  /**
+   * Returns theme object
+   * @param tName
+   * @returns {*}
+   */
+  self.getTheme = function (tName) {
     return (themes.hasOwnProperty(tName)) ? themes[tName] : themes[defaults.theme];
   };
 
-  self.addTheme = function(tName, config) {
+  /**
+   * Add theme @tName with set of parameters @config
+   * @param tName
+   * @param config
+   */
+  self.addTheme = function (tName, config) {
     tName = tName.trim();
     if (!tName) throw new SCPError(SCP.errMsg.INVALID_THEME_NAME);
 
@@ -48,10 +77,16 @@ function SCPTemplate() {
     };
   };
 
-  self.configTheme = function(tName, property, value) {
+  /**
+   * Edit theme @tName. @property also can be an object with parameters
+   * @param tName
+   * @param property
+   * @param value
+   */
+  self.configTheme = function (tName, property, value) {
     if (themes.hasOwnProperty(tName)) {
       if (arguments.length === 2 && SCP.utils.isObj(property)) {
-        SCP.utils.mapObj(property, function(propVal, propName) {
+        SCP.utils.mapObj(property, function (propVal, propName) {
           themes[tName][propName] = propVal;
         });
       } else if (arguments.length === 3) {
@@ -60,12 +95,13 @@ function SCPTemplate() {
     }
   };
 
-  self.build = function() {
-
+  self.build = function () {
+    // dummy
+    var template = '';
   };
 
-  self.render = function($container) {
-
+  self.render = function ($container) {
+    // dummy
   };
 
   self.theme = self.getTheme(defaults.theme);
