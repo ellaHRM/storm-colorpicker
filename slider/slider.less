@@ -1,0 +1,103 @@
+// TODO run through autoprefixer
+@trackLength: 300px;
+@trackHeight: 10px;
+@thumbColor: #983301;
+@thumbOffset: -5px;
+
+.slider {
+  * {
+    .box();
+    .no-select();
+  }
+  display: inline-block;
+  position: relative;
+
+  &.horizontal {
+    .track {
+      .track-deco(right);
+      width: @trackLength;
+      height: @trackHeight;
+    }
+
+    .thumb {
+      .thumb-deco('v');
+      margin-top: @thumbOffset;
+    }
+
+    .tip {
+      .tip-deco();
+    }
+  }
+
+  &.vertical {
+    .track {
+      .track-deco(top);
+      width: @trackHeight;
+      height: @trackLength;
+    }
+
+    .thumb {
+      .thumb-deco('>');
+      margin-left: @thumbOffset;
+    }
+
+    .tip {
+      .tip-deco();
+    }
+  }
+
+}
+
+.tip-deco() {
+  position: absolute;
+  white-space: nowrap;
+  z-index: 100;
+  color: white;
+  border: solid #0c0c0c 1px;
+  border-radius: 10px;
+  padding: 5px 8px;
+}
+
+.thumb-deco(@position) {
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.thumb-deco(@position) when (@position = '>') {
+  border-style: solid;
+  border-width: 5px 0 5px 10px;
+  border-color: transparent transparent transparent @thumbColor;
+}
+
+.thumb-deco(@position) when (@position = 'v') {
+  border-style: solid;
+  border-width: 10px 5px 0 5px;
+  border-color: @thumbColor transparent transparent transparent;
+}
+
+.track-deco(@from) {
+  border: 1px solid #fff;
+  background-color: #fff;
+  background-image: -webkit-linear-gradient(@from, #fff 0%, #808080 60%, #000 100%);
+  background-image: -moz-linear-gradient(@from, #fff 0%, #808080 60%, #000 100%);
+  background-image: -ms-linear-gradient(@from, #fff 0%, #808080 60%, #000 100%);
+  background-image: -o-linear-gradient(@from, #fff 0%, #808080 60%, #000 100%);
+}
+
+.box() {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
