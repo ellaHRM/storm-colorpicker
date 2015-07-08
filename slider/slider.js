@@ -1,5 +1,6 @@
 (function (window) {
   var uniqueId = 0;
+  // TODO not so elegant way to determine active thumb, although ...
   var capturedThumb;
 
   /**
@@ -28,9 +29,11 @@
    * @param attachTo
    * @param direction
    * @param startValue
+   * @returns {{setValue: (Function), showTip: (Function), hideTip: (Function)}}
    * @constructor
+   * @param caption
    */
-  function Slider(attachTo, direction, startValue) {
+  function Slider(attachTo, direction, startValue, caption) {
     var self = this,
       C = {
         DIR_HORIZONTAL: 'horizontal',
@@ -48,6 +51,18 @@
     };
 
     self.uniqueId = uniqueId;
+    self.subscribers = {
+      change: []
+    };
+
+    function parseArguments(args) {
+      if (args.length === 2 && typeof direction === 'object') {
+        var opts = Object.create(direction);
+        direction = opts.direction;
+        startValue = opts.startValue;
+        caption = opts.caption;
+      }
+    }
 
     /**
      * Init module
@@ -124,6 +139,11 @@
      * Events
      ********/
     self.bindEvents = function () {
+      /**
+       * Fires when thumb is captured by mouse (tap)
+       * ------>o<----------
+       * @param e
+       */
       function onThumbCaptured(e) {
         capturedThumb = e.target;
         self.thumbState.captured = true;
@@ -133,7 +153,14 @@
         self.showTip();
       }
 
+      /**
+       * Fires when thumb slides over the track
+       * ------o->->->------
+       * @param e
+       */
       function onThumbSlides(e) {
+        // TODO weak place: each time regenerates variables
+        self.setupVariables();
         if (!self.thumbState.slides && self.thumbState.captured === true) {
           self.thumbState.slides = true;
         }
@@ -143,6 +170,10 @@
         }
       }
 
+      /**
+       * Fires when thumb is pressed away
+       * ------o------------
+       */
       function onThumbReleases() {
         capturedThumb = false;
         self.thumbState.captured = false;
@@ -164,10 +195,6 @@
       sliderRect = self.$track.getBoundingClientRect();
       thumbRect = self.$thumb.getBoundingClientRect();
       ratio = C.MAX_VALUE / sliderLength;
-      self.value = (startValue === undefined) ? (C.MAX_VALUE / 2) : startValue;
-
-      // move thumb to initial position
-      self.moveThumb(getRelVal(self.value), getRelVal(self.value), true);
     };
 
     /**
@@ -188,7 +215,8 @@
     self.moveThumb = function(posX, posY, ignoreOffset) {
       var thumbPos,
         sliderOffsetTop = sliderRect.top,
-        sliderOffsetLeft = sliderRect.left;
+        sliderOffsetLeft = sliderRect.left,
+        value;
 
       if (ignoreOffset) {
         sliderOffsetTop = 0;
@@ -230,7 +258,6 @@
           }
           // absolute value relative to parent
           self.$thumb.style.left = thumbPos - (thumbRect.height / 2) + 'px';
-          self.$tip.style.left = thumbPos;
 
           // 60 is magic number to properly align tip's left position
           self.$tip.style.left = thumbPos - 60 + 'px';
@@ -238,18 +265,37 @@
           break;
       }
 
-      self.value = Math.floor(thumbPos * ratio);
-      self.$tip.innerText = 'Brightness: ' + self.value;
+      value = Math.ceil(thumbPos * ratio);
+      if (value !== self.value) {
+        self.releaseSubscriber('change', value);
+      }
+      self.value = value;
+      self.$tip.innerText = caption ? caption + self.value : self.value;
 
-      if (direction == C.DIR_VERTICAL) {
+      self.alignTip();
+    };
+
+    self.alignTip = function() {
+      // TODO auto align based on width (probably)
+      if (direction === C.DIR_VERTICAL) {
         if (self.value >= 100) {
           // add left margin if value higher then 100
           self.$tip.style.marginLeft = -8 + 'px';
         } else {
           self.$tip.style.marginLeft = 0;
         }
+      } else {
+        if (self.value >= 100) {
+          // add left margin if value higher then 100
+          self.$tip.style.marginLeft = 0;
+        } else {
+          if (self.value > 10) {
+            self.$tip.style.marginLeft = 4 + 'px';
+          } else {
+            self.$tip.style.marginLeft = 6 + 'px';
+          }
+        }
       }
-      // TODO auto align
     };
 
     /**
@@ -260,14 +306,46 @@
       self.moveThumb(getRelVal(val), getRelVal(val), true);
     };
 
+    /**
+     *
+     * @returns {*}
+     */
+    self.getValue = function () {
+      return self.value;
+    };
+
+    /**
+     * Releases event
+     * @param evt
+     */
+    self.releaseSubscriber = function(evt) {
+      var args = Array.prototype.splice.call(arguments, 1);
+      self.subscribers[evt].map(function (fn) {
+        fn.apply(this, args);
+      });
+    };
+
+    parseArguments(arguments);
     self.init();
     self.setupVariables();
+    self.value = (startValue === undefined || (startValue < 0 || startValue > C.MAX_VALUE)) ? (C.MAX_VALUE / 2) : startValue;
+
+    // move thumb to initial position
+    self.moveThumb(getRelVal(self.value), getRelVal(self.value), true);
 
     uniqueId++;
 
-    //return {
-      // TODO
-    //}
+    return {
+      setValue: self.setValue,
+      getValue: self.getValue,
+      showTip: self.showTip,
+      hideTip: self.hideTip,
+      on: function(evt, fn) {
+        if (self.subscribers.hasOwnProperty(evt)) {
+          self.subscribers[evt].push(fn);
+        }
+      }
+    };
   }
 
   // delegation global events to Slider-s

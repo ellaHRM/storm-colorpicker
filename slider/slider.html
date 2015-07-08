@@ -14,8 +14,18 @@
 </head>
 <body>
 <script>
-  var a = new Slider(document.querySelector('body'), 'horizontal');
-  new Slider(document.querySelector('body'), 'vertical');
+  //  var a = new Slider(document.querySelector('body'), 'horizontal', 300, 400);
+  var a = new Slider(document.querySelector('body'), {
+    direction: 'horizontal',
+    startValue: 55,
+    caption: 'Opacity: '
+  });
+  a.on('change', function(val) {
+    console.log(val);
+  });
+
+  new Slider(document.querySelector('body'), 'vertical', 50, 'Brightness: ');
+  document.querySelector('.slider').style.marginLeft = '500px';
 </script>
 </body>
 </html>

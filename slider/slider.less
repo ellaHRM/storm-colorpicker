@@ -1,9 +1,13 @@
 // TODO run through autoprefixer
+// track
 @trackLength: 300px;
 @trackHeight: 12px;
+// thumb
 @thumbColor: #983301;
 @thumbSize: 6px;
+// tip
 @tipBg: #3C3F41;
+@tipColor: #c6c6c6;
 
 .slider {
   * {
@@ -55,7 +59,7 @@
   position: absolute;
   white-space: nowrap;
   z-index: 100;
-  color: #bbbbbb;
+  color: @tipColor;
   font-size: 16px;
   border: solid #0c0c0c 1px;
   border-radius: 10px;
