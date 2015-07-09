@@ -42,8 +42,12 @@
       },
       sliderRect = {},
       thumbRect = {},
+      thumbHalfWidth,
+      thumbHalfHeight,
       sliderLength,
-      ratio = 1;
+      ratio,
+      // offset between tip and thumb (just custom value)
+      tipThumbOffset = 3;
 
     self.thumbState = {
       captured: false,
@@ -135,6 +139,14 @@
       self.$tip.classList.add('hide');
     };
 
+    /**
+     * Returns if the tip is shown
+     * @returns {boolean}
+     */
+    self.isTipShown = function() {
+      return self.$tip.style.visibility !== 'hidden';
+    };
+
     /*********
      * Events
      ********/
@@ -166,7 +178,6 @@
         }
         if (self.thumbState.slides) {
           self.moveThumb(e.offsetX || e.clientX, e.offsetY || e.clientY);
-          self.showTip();
         }
       }
 
@@ -181,6 +192,7 @@
         self.hideTip();
       }
 
+      // Bind events
       document.addEventListener('mousemove-' + self.uniqueId, onThumbSlides);
       document.addEventListener('mouseup-' + self.uniqueId, onThumbReleases);
       self.$thumb.addEventListener('mousedown', onThumbCaptured);
@@ -194,6 +206,8 @@
       sliderLength = direction === C.DIR_HORIZONTAL ? self.$track.clientWidth : self.$track.clientHeight;
       sliderRect = self.$track.getBoundingClientRect();
       thumbRect = self.$thumb.getBoundingClientRect();
+      thumbHalfWidth = thumbRect.width / 2;
+      thumbHalfHeight = thumbRect.height / 2;
       ratio = C.MAX_VALUE / sliderLength;
     };
 
@@ -237,10 +251,7 @@
             thumbPos = posY - sliderOffsetTop;
           }
           // absolute value relative to parent
-          self.$thumb.style.top = thumbPos - (thumbRect.height / 2) + 'px';
-
-          // 15 is magic number to properly align tip's top position
-          self.$tip.style.top = thumbPos - 15 + 'px';
+          self.$thumb.style.top = thumbPos - thumbHalfHeight + 'px';
 
           break;
 
@@ -257,10 +268,7 @@
             thumbPos = posX - sliderOffsetLeft;
           }
           // absolute value relative to parent
-          self.$thumb.style.left = thumbPos - (thumbRect.height / 2) + 'px';
-
-          // 60 is magic number to properly align tip's left position
-          self.$tip.style.left = thumbPos - 60 + 'px';
+          self.$thumb.style.left = thumbPos - thumbHalfWidth + 'px';
 
           break;
       }
@@ -272,34 +280,29 @@
       self.value = value;
       self.$tip.innerText = caption ? caption + self.value : self.value;
 
-      self.alignTip();
+      self.alignTip(thumbPos);
     };
 
-    self.alignTip = function() {
-      // TODO auto align based on width (probably)
+    /**
+     * Align tip relatively to thumb
+     * @param relativePos
+     */
+    self.alignTip = function(relativePos) {
+      var tipLen;
+
       if (direction === C.DIR_VERTICAL) {
-        if (self.value >= 100) {
-          // add left margin if value higher then 100
-          self.$tip.style.marginLeft = -8 + 'px';
-        } else {
-          self.$tip.style.marginLeft = 0;
-        }
+        tipLen = self.$tip.offsetHeight;
+        self.$tip.style.top = relativePos - (tipLen / 2) + 'px';
+        self.$tip.style.left = -self.$tip.offsetWidth - thumbHalfWidth - tipThumbOffset + 'px';
       } else {
-        if (self.value >= 100) {
-          // add left margin if value higher then 100
-          self.$tip.style.marginLeft = 0;
-        } else {
-          if (self.value > 10) {
-            self.$tip.style.marginLeft = 4 + 'px';
-          } else {
-            self.$tip.style.marginLeft = 6 + 'px';
-          }
-        }
+        tipLen = self.$tip.offsetWidth;
+        self.$tip.style.top = -self.$tip.offsetHeight - thumbHalfHeight - tipThumbOffset + 'px';
+        self.$tip.style.left = relativePos - (tipLen / 2) + 'px';
       }
     };
 
     /**
-     *
+     * Sets value value of slider
      * @param val
      */
     self.setValue = function(val) {
@@ -307,7 +310,7 @@
     };
 
     /**
-     *
+     * Returns value of slider
      * @returns {*}
      */
     self.getValue = function () {
@@ -315,7 +318,7 @@
     };
 
     /**
-     * Releases event
+     * Releases specific @evt
      * @param evt
      */
     self.releaseSubscriber = function(evt) {
@@ -325,7 +328,9 @@
       });
     };
 
+    // parse constructor's arguments
     parseArguments(arguments);
+    // init components (templates)
     self.init();
     self.setupVariables();
     self.value = (startValue === undefined || (startValue < 0 || startValue > C.MAX_VALUE)) ? (C.MAX_VALUE / 2) : startValue;

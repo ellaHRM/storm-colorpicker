@@ -28,11 +28,6 @@
       .thumb-deco('v');
       margin-top: -@thumbSize;
     }
-
-    .tip {
-      .tip-deco();
-      top: -38px;
-    }
   }
 
   &.vertical {
@@ -46,10 +41,12 @@
       .thumb-deco('>');
       margin-left: -@thumbSize;
     }
+  }
 
+  &.vertical,
+  &.horizontal {
     .tip {
       .tip-deco();
-      left: -120px;
     }
   }
 
@@ -67,7 +64,7 @@
   background: @tipBg;
 
   &.hide {
-    display: none;
+    visibility: hidden;
   }
 }
 
