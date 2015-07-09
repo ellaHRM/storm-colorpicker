@@ -6,35 +6,36 @@
   <script>
     document.write('<link rel="stylesheet" href="template.css?'+Math.random()+'"/>');
   </script>
+  <link rel="stylesheet" href="./slider/slider.css"/>
 </head>
 <body>
-  <section class="color-picker cp-medium cp-embedded cp-theme-dark">
+  <section class="color-picker cp-embedded cp-theme-dark">
     <header>
       <section class="cp-color-scheme">
         <div class="cp-color-scheme-block">
           <label>
-            H: <input type="text" class="cp-color-scheme-block-part" maxlength="3"/>&deg;
+            H: <input type="text" class="color-component input" maxlength="3"/>&deg;
           </label>
         </div>
         <div class="cp-color-scheme-block">
           <label>
-            S: <input type="text" class="cp-color-scheme-block-part" maxlength="3"/>%
+            S: <input type="text" class="color-component input" maxlength="3"/>%
           </label>
         </div>
         <div class="cp-color-scheme-block">
           <label>
-            B: <input type="text" class="cp-color-scheme-block-part" maxlength="3"/>%
+            B: <input type="text" class="color-component input" maxlength="3"/>%
           </label>
         </div>
         <div class="cp-color-scheme-block">
-          <select class="cp-color-scheme-selector">
+          <select class="color-scheme-selector">
             <option value="1">HSB</option>
             <option value="2">RGB</option>
           </select>
         </div>
         <div class="cp-color-scheme-block">
           <label>
-            # <input type="text" class="cp-color-scheme-block-part-hex" maxlength="6"/>
+            # <input type="text" class="color-component input hex" maxlength="6"/>
           </label>
         </div>
       </section>
@@ -43,11 +44,11 @@
       <div class="cp-color-wheel">
 
       </div>
-      <div class="cp-slider-right cp-slider">
-        <input type="range" orient="vertical"/>
+      <div class="cp-slider-right cp-slider" id="vertical-slider">
+
       </div>
-      <div class="cp-slider-bottom cp-slider">
-        <input type="range" orient="horizontal"/>
+      <div class="cp-slider-bottom cp-slider" id="horizontal-slider">
+
       </div>
     </section>
     <footer>
@@ -58,6 +59,13 @@
       </section>
     </footer>
   </section>
-hello world
+
+  <img src="colorpicker.bmp" alt="Color picker"/>
+  <img src="colorpickerhsb.bmp" alt="Color picker"/>
+  <script src="./slider/slider.js"></script>
+  <script>
+    new Slider(document.getElementById('vertical-slider'), 'vertical', 'Brightness: ');
+    new Slider(document.getElementById('horizontal-slider'), 'horizontal', 'Opacity: ');
+  </script>
 </body>
 </html>
