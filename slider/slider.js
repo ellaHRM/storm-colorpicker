@@ -28,19 +28,18 @@
    *
    * @param attachTo
    * @param direction
-   * @param startValue
    * @returns {{setValue: (Function), showTip: (Function), hideTip: (Function)}}
    * @constructor
    * @param caption
    */
-  function Slider(attachTo, direction, startValue, caption) {
+  function Slider(attachTo, direction, caption) {
     var self = this,
       C = {
         DIR_HORIZONTAL: 'horizontal',
         DIR_VERTICAL: 'vertical',
         MAX_VALUE: 255
       },
-      sliderRect = {},
+      trackRect = {},
       thumbRect = {},
       thumbHalfWidth,
       thumbHalfHeight,
@@ -48,6 +47,8 @@
       ratio,
       // offset between tip and thumb (just custom value)
       tipThumbOffset = 3;
+
+    self.value = 0;
 
     self.thumbState = {
       captured: false,
@@ -59,13 +60,28 @@
       change: []
     };
 
+    /**
+     * Parse and set defaults for constructor. First action
+     * @param args
+     */
     function parseArguments(args) {
+      var opts = {};
+
       if (args.length === 2 && typeof direction === 'object') {
-        var opts = Object.create(direction);
-        direction = opts.direction;
-        startValue = opts.startValue;
-        caption = opts.caption;
+        opts = Object.create(direction);
+
+        // direction
+        direction = opts.direction ? opts.direction : C.DIR_HORIZONTAL;
+        // value
+        if (opts.value) {
+          self.value = (opts.value < 0 || opts.value > C.MAX_VALUE) ? (C.MAX_VALUE / 2) : opts.value;
+        }
+        // caption
+        caption = opts.caption || '';
       }
+
+      // thumb direction
+      self.thumbDirection = opts.thumbDirection ? opts.thumbDirection : (direction === C.DIR_HORIZONTAL) ? 'top' : 'left';
     }
 
     /**
@@ -104,6 +120,7 @@
     self.buildThumb = function () {
       self.$thumb = document.createElement('span');
       self.$thumb.classList.add('thumb');
+      self.$thumb.classList.add('thumb-' + self.thumbDirection);
     };
 
     /**
@@ -203,8 +220,8 @@
      * (Re)setup variables
      */
     self.setupVariables = function() {
-      sliderLength = direction === C.DIR_HORIZONTAL ? self.$track.clientWidth : self.$track.clientHeight;
-      sliderRect = self.$track.getBoundingClientRect();
+      sliderLength = (direction === C.DIR_HORIZONTAL) ? self.$track.clientWidth : self.$track.clientHeight;
+      trackRect = self.$track.getBoundingClientRect();
       thumbRect = self.$thumb.getBoundingClientRect();
       thumbHalfWidth = thumbRect.width / 2;
       thumbHalfHeight = thumbRect.height / 2;
@@ -228,27 +245,27 @@
      */
     self.moveThumb = function(posX, posY, ignoreOffset) {
       var thumbPos,
-        sliderOffsetTop = sliderRect.top,
-        sliderOffsetLeft = sliderRect.left,
+        trackOffsetTop = trackRect.top,
+        trackOffsetLeft = trackRect.left,
         value;
 
       if (ignoreOffset) {
-        sliderOffsetTop = 0;
-        sliderOffsetLeft = 0;
+        trackOffsetTop = 0;
+        trackOffsetLeft = 0;
       }
 
       switch (direction) {
         // vertical slider
         case C.DIR_VERTICAL:
-          if (posY > (sliderOffsetTop + sliderLength)) {
+          if (posY > (trackOffsetTop + sliderLength)) {
             // further
             thumbPos = sliderLength;
-          } else if (posY < sliderOffsetTop) {
+          } else if (posY < trackOffsetTop) {
             // before
             thumbPos = 0;
           } else {
             // between
-            thumbPos = posY - sliderOffsetTop;
+            thumbPos = posY - trackOffsetTop;
           }
           // absolute value relative to parent
           self.$thumb.style.top = thumbPos - thumbHalfHeight + 'px';
@@ -257,15 +274,15 @@
 
         // horizontal slider
         case C.DIR_HORIZONTAL:
-          if (posX > (sliderOffsetLeft + sliderLength)) {
+          if (posX > (trackOffsetLeft + sliderLength)) {
             // further
             thumbPos = sliderLength;
-          } else if (posX < sliderOffsetLeft) {
+          } else if (posX < trackOffsetLeft) {
             // before
             thumbPos = 0;
           } else {
             // between
-            thumbPos = posX - sliderOffsetLeft;
+            thumbPos = posX - trackOffsetLeft;
           }
           // absolute value relative to parent
           self.$thumb.style.left = thumbPos - thumbHalfWidth + 'px';
@@ -288,17 +305,30 @@
      * @param relativePos
      */
     self.alignTip = function(relativePos) {
-      var tipLen;
+      var tipLen,
+        leftOffset,
+        topOffset;
 
       if (direction === C.DIR_VERTICAL) {
         tipLen = self.$tip.offsetHeight;
-        self.$tip.style.top = relativePos - (tipLen / 2) + 'px';
-        self.$tip.style.left = -self.$tip.offsetWidth - thumbHalfWidth - tipThumbOffset + 'px';
+        topOffset = relativePos - (tipLen / 2);
+        if (self.thumbDirection === 'left') {
+          leftOffset = -self.$tip.offsetWidth - thumbHalfWidth - tipThumbOffset;
+        } else {
+          leftOffset = trackRect.width + thumbHalfWidth + tipThumbOffset;
+        }
       } else {
         tipLen = self.$tip.offsetWidth;
-        self.$tip.style.top = -self.$tip.offsetHeight - thumbHalfHeight - tipThumbOffset + 'px';
-        self.$tip.style.left = relativePos - (tipLen / 2) + 'px';
+        if (self.thumbDirection === 'top') {
+          topOffset = -self.$tip.offsetHeight - thumbHalfHeight - tipThumbOffset;
+        } else {
+          topOffset = trackRect.height + thumbHalfHeight + tipThumbOffset;
+        }
+        leftOffset = relativePos - (tipLen / 2);
       }
+
+      self.$tip.style.left = leftOffset + 'px';
+      self.$tip.style.top = topOffset + 'px';
     };
 
     /**
@@ -333,7 +363,6 @@
     // init components (templates)
     self.init();
     self.setupVariables();
-    self.value = (startValue === undefined || (startValue < 0 || startValue > C.MAX_VALUE)) ? (C.MAX_VALUE / 2) : startValue;
 
     // move thumb to initial position
     self.moveThumb(getRelVal(self.value), getRelVal(self.value), true);

@@ -8,6 +8,7 @@
 // tip
 @tipBg: #3C3F41;
 @tipColor: #c6c6c6;
+@tipBorderColor: #0c0c0c;
 
 .slider {
   * {
@@ -25,8 +26,13 @@
     }
 
     .thumb {
-      .thumb-deco('v');
-      margin-top: -@thumbSize;
+      &.thumb-top {
+        .thumb-deco('v');
+      }
+
+      &.thumb-bottom {
+        .thumb-deco('^');
+      }
     }
   }
 
@@ -38,8 +44,13 @@
     }
 
     .thumb {
-      .thumb-deco('>');
-      margin-left: -@thumbSize;
+      &.thumb-right {
+        .thumb-deco('<');
+      }
+
+      &.thumb-left {
+        .thumb-deco('>');
+      }
     }
   }
 
@@ -58,7 +69,7 @@
   z-index: 100;
   color: @tipColor;
   font-size: 16px;
-  border: solid #0c0c0c 1px;
+  border: solid @tipBorderColor 1px;
   border-radius: 10px;
   padding: 5px 8px;
   background: @tipBg;
@@ -80,12 +91,28 @@
   border-style: solid;
   border-width: @thumbSize 0 @thumbSize @thumbSize*2;
   border-color: transparent transparent transparent @thumbColor;
+  margin-left: -@thumbSize;
+}
+
+.thumb-deco(@position) when (@position = '<') {
+  border-style: solid;
+  border-width: @thumbSize @thumbSize*2 @thumbSize 0;
+  border-color: transparent @thumbColor transparent transparent;
+  margin-left: @thumbSize;
 }
 
 .thumb-deco(@position) when (@position = 'v') {
   border-style: solid;
   border-width: @thumbSize*2 @thumbSize 0 @thumbSize;
   border-color: @thumbColor transparent transparent transparent;
+  margin-top: -@thumbSize;
+}
+
+.thumb-deco(@position) when (@position = '^') {
+  border-style: solid;
+  border-width: 0 @thumbSize @thumbSize*2 @thumbSize;
+  border-color: transparent transparent @thumbColor transparent;
+  margin-top: @thumbSize;
 }
 
 .track-deco(@from) {

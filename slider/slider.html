@@ -14,17 +14,17 @@
 </head>
 <body>
 <script>
-  //  var a = new Slider(document.querySelector('body'), 'horizontal', 300, 400);
-  var a = new Slider(document.querySelector('body'), {
+  var hSlider = new Slider(document.querySelector('body'), {
     direction: 'horizontal',
-    startValue: 105,
+    value: 105,
     caption: 'Opacity: '
   });
-  a.on('change', function(val) {
+  hSlider.on('change', function(val) {
     console.log(val);
   });
 
-  new Slider(document.querySelector('body'), 'vertical', 50, 'Brightness: ');
+  var vSlider = new Slider(document.querySelector('body'), 'vertical', 'Brightness: ');
+  vSlider.setValue(188);
   document.querySelector('.slider').style.marginLeft = '500px';
 </script>
 </body>
