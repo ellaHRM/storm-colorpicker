@@ -1,8 +1,8 @@
-(function (window) {
+(function (window, document) {
+  // TODO add ability to change width / height of slider
   var uniqueId = 0;
   // TODO not so elegant way to determine active thumb, although ...
   var capturedThumb;
-
   /**
    *
    * @param e
@@ -28,16 +28,17 @@
    *
    * @param attachTo
    * @param direction
-   * @returns {{setValue: (Function), showTip: (Function), hideTip: (Function)}}
-   * @constructor
    * @param caption
+   * @returns {{setValue: (Function), getValue: (Function), showTip: (Function), hideTip: (Function), setCaption: Function, on: Function}}
+   * @constructor
    */
   function Slider(attachTo, direction, caption) {
     var self = this,
       C = {
         DIR_HORIZONTAL: 'horizontal',
         DIR_VERTICAL: 'vertical',
-        MAX_VALUE: 255
+        MIN_VALUE: 0,
+        MAX_VALUE: 100
       },
       trackRect = {},
       thumbRect = {},
@@ -47,6 +48,8 @@
       ratio,
       // offset between tip and thumb (just custom value)
       tipThumbOffset = 3;
+
+    self.publicApi = {};
 
     self.value = 0;
 
@@ -74,14 +77,24 @@
         direction = opts.direction ? opts.direction : C.DIR_HORIZONTAL;
         // value
         if (opts.value) {
-          self.value = (opts.value < 0 || opts.value > C.MAX_VALUE) ? (C.MAX_VALUE / 2) : opts.value;
+          self.value = (opts.value < C.MIN_VALUE || opts.value > C.MAX_VALUE) ? (C.MAX_VALUE / 2) : opts.value;
         }
-        // caption
-        caption = opts.caption || '';
+        // min value
+        if (opts.min) {
+          C.MIN_VALUE = opts.min;
+        }
+        // max value
+        if (opts.max) {
+          C.MAX_VALUE = opts.max;
+        }
       }
 
+      if (!(attachTo instanceof HTMLElement)) {
+        attachTo = document.querySelector(attachTo);
+      }
       // thumb direction
       self.thumbDirection = opts.thumbDirection ? opts.thumbDirection : (direction === C.DIR_HORIZONTAL) ? 'top' : 'left';
+      self.caption = opts.caption ? opts.caption : (caption || '');
     }
 
     /**
@@ -146,7 +159,9 @@
      * Shows tip
      */
     self.showTip = function() {
-      self.$tip.classList.remove('hide');
+      if (self.caption) {
+        self.$tip.classList.remove('hide');
+      }
     };
 
     /**
@@ -177,9 +192,9 @@
         capturedThumb = e.target;
         self.thumbState.captured = true;
         if (e.target instanceof HTMLDivElement) {
+          self.showTip();
           self.moveThumb(e.offsetX || e.clientX, e.offsetY || e.clientY, true);
         }
-        self.showTip();
       }
 
       /**
@@ -225,7 +240,7 @@
       thumbRect = self.$thumb.getBoundingClientRect();
       thumbHalfWidth = thumbRect.width / 2;
       thumbHalfHeight = thumbRect.height / 2;
-      ratio = C.MAX_VALUE / sliderLength;
+      ratio = (C.MAX_VALUE - C.MIN_VALUE) / sliderLength;
     };
 
     /**
@@ -290,14 +305,22 @@
           break;
       }
 
-      value = Math.ceil(thumbPos * ratio);
+      value = Math.ceil((thumbPos) * ratio + C.MIN_VALUE);
       if (value !== self.value) {
         self.releaseSubscriber('change', value);
       }
       self.value = value;
-      self.$tip.innerText = caption ? caption + self.value : self.value;
+      self.$tip.innerHTML = self.getCaption();
 
       self.alignTip(thumbPos);
+    };
+
+    /**
+     * Get caption with prepared text
+     * @returns {string}
+     */
+    self.getCaption = function() {
+      return self.caption.replace('{$n}', self.value);
     };
 
     /**
@@ -310,18 +333,24 @@
         topOffset;
 
       if (direction === C.DIR_VERTICAL) {
+        // vertical
         tipLen = self.$tip.offsetHeight;
         topOffset = relativePos - (tipLen / 2);
         if (self.thumbDirection === 'left') {
+          // left
           leftOffset = -self.$tip.offsetWidth - thumbHalfWidth - tipThumbOffset;
         } else {
+          // right
           leftOffset = trackRect.width + thumbHalfWidth + tipThumbOffset;
         }
       } else {
+        // horizontal
         tipLen = self.$tip.offsetWidth;
         if (self.thumbDirection === 'top') {
+          // top
           topOffset = -self.$tip.offsetHeight - thumbHalfHeight - tipThumbOffset;
         } else {
+          // bottom
           topOffset = trackRect.height + thumbHalfHeight + tipThumbOffset;
         }
         leftOffset = relativePos - (tipLen / 2);
@@ -354,7 +383,7 @@
     self.releaseSubscriber = function(evt) {
       var args = Array.prototype.splice.call(arguments, 1);
       self.subscribers[evt].map(function (fn) {
-        fn.apply(this, args);
+        fn.apply(self.publicApi, args);
       });
     };
 
@@ -369,17 +398,22 @@
 
     uniqueId++;
 
-    return {
+    self.publicApi = {
       setValue: self.setValue,
       getValue: self.getValue,
       showTip: self.showTip,
       hideTip: self.hideTip,
-      on: function(evt, fn) {
+      setCaption: function (caption) {
+        self.caption = caption;
+      },
+      on: function (evt, fn) {
         if (self.subscribers.hasOwnProperty(evt)) {
           self.subscribers[evt].push(fn);
         }
       }
     };
+
+    return self.publicApi;
   }
 
   // delegation global events to Slider-s
@@ -391,4 +425,4 @@
   });
 
   window.Slider = Slider;
-}(window));
+}(window, document));

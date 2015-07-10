@@ -76,6 +76,8 @@
 
   &.hide {
     visibility: hidden;
+    // hack to not prevent selecting under the tip
+    left: -9999px !important;
   }
 }
 

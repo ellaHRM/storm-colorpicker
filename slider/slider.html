@@ -7,25 +7,35 @@
   <script>document.write('<script src="slider.js?'+Math.random()+'"><\/script>')</script>
   <style>
     body {
-      margin-top: 100px;
       background: #3C3F41;
+      margin: 0 auto;
+      width: 600px;
+      text-align: center;
+      padding-top: 100px;
     }
   </style>
 </head>
 <body>
+<div id="slider-horizontal"></div>
+<div id="slider-vertical"></div>
 <script>
-  var hSlider = new Slider(document.querySelector('body'), {
-    direction: 'horizontal',
-    value: 105,
-    caption: 'Opacity: '
-  });
-  hSlider.on('change', function(val) {
-    console.log(val);
-  });
+  window.addEventListener('load', function() {
+    var hSlider = new Slider('#slider-horizontal', {
+      direction: 'horizontal',
+      value: 105,
+      caption: 'Opacity: {$n}',
+      min: 0,
+      max: 255,
+      thumbDirection: 'top'
+    });
+    hSlider.on('change', function (val) {
+      console.log(this.getValue());
+    });
 
-  var vSlider = new Slider(document.querySelector('body'), 'vertical', 'Brightness: ');
-  vSlider.setValue(188);
-  document.querySelector('.slider').style.marginLeft = '500px';
+    var vSlider = new Slider('#slider-vertical', 'vertical', 'Brightness: {$n}');
+    vSlider.setValue(88);
+//    document.querySelector('.slider').style.marginLeft = '500px';
+  });
 </script>
 </body>
 </html>
