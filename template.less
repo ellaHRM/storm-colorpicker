@@ -16,6 +16,8 @@
   * {
     .box();
     .no-select();
+
+    font-family: Arial, sans-serif;
   }
 
   &.cp-theme-dark {
@@ -36,7 +38,6 @@
         & > select {
           color: #BABABA;
         }
-
       }
     }
 
@@ -79,6 +80,21 @@
 
     .cp-slider {
       display: inline-block;
+      cursor: default;
+
+      .slider .tip {
+        font-size: 14px;
+      }
+    }
+
+    .cp-slider-right {
+      float: right;
+    }
+
+    .cp-slider-bottom {
+      .slider {
+        margin-top: 20px;
+      }
     }
   }
 
@@ -91,6 +107,16 @@
     .cp-color-scheme-block {
       display: inline-block;
       vertical-align: middle;
+
+      margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      label {
+        font-size: 12px;
+      }
 
       input.color-component,
       select.color-scheme-selector {

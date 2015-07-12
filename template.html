@@ -59,13 +59,21 @@
       </section>
     </footer>
   </section>
-
-  <img src="colorpicker.bmp" alt="Color picker"/>
+  <br/>
+  <!--<img src="colorpicker.bmp" alt="Color picker"/>-->
   <img src="colorpickerhsb.bmp" alt="Color picker"/>
   <script src="./slider/slider.js"></script>
   <script>
-    new Slider(document.getElementById('vertical-slider'), 'vertical', 'Brightness: ');
-    new Slider(document.getElementById('horizontal-slider'), 'horizontal', 'Opacity: ');
+    new Slider('#vertical-slider', {
+      direction: 'vertical',
+      caption: 'Brightness: {$n}',
+      max: 255
+    });
+    new Slider('#horizontal-slider', {
+      direction: 'horizontal',
+      caption: 'Opacity: {$n}',
+      max: 255
+    });
   </script>
 </body>
 </html>

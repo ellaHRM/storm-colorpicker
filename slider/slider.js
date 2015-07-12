@@ -191,8 +191,8 @@
       function onThumbCaptured(e) {
         capturedThumb = e.target;
         self.thumbState.captured = true;
+        self.showTip();
         if (e.target instanceof HTMLDivElement) {
-          self.showTip();
           self.moveThumb(e.offsetX || e.clientX, e.offsetY || e.clientY, true);
         }
       }
