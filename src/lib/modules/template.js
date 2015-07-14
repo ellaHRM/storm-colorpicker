@@ -2,112 +2,65 @@
 
 /**
  * Template class
+ * @param container
  * @constructor
  */
-function SCPTemplate() {
+function SCPTemplate(container) {
   SCPEventDispatcher.call(this);
 
   var self = this,
     defaults = {
       theme: 'dark',
-      size: 'full'
+      attach: 'inner'
     },
-    sizes = {
-      full: {
-        w: 500,
-        h: 500
-      },
-      medium: {
-        w: 300,
-        h: 300
-      },
-      small: {
-        w: 150,
-        h: 150
-      }
-    },
-    themes = {
-      dark: {
-        bgColor: 'brown'
-      },
-      light: {
-        bgColor: 'white'
-      }
-    };
+    themes = ['dark', 'light'];
 
   /**
-   * Returns size obj
-   * @param size
+   *
+   * @param html
+   */
+  self.setUpTplContainer = function(html) {
+    switch (self.attach) {
+      case 'inner':
+        self.tplContainer.classList.add('cp-embedded');
+        self.tplContainer.innerHTML = html;
+        break;
+    }
+
+    self.tplContainer.classList.add('cp-theme-' + self.theme);
+    self.container.appendChild(self.tplContainer);
+  };
+
+  /**
+   * Returns current theme
    * @returns {*}
    */
-  self.getSize = function (size) {
-    return (sizes.hasOwnProperty(size)) ? sizes[size] : sizes[defaults.size];
+  self.getTheme = function () {
+    return self.theme;
   };
 
-  /**
-   * Set template's size
-   * @param size
-   */
-  self.setSize = function (size) {
-    if (sizes.hasOwnProperty(size)) {
-      self.size = self.getSize(sizes[size]);
-    }
-  };
-
-  /**
-   * Returns theme object
-   * @param tName
-   * @returns {*}
-   */
-  self.getTheme = function (tName) {
-    return (themes.hasOwnProperty(tName)) ? themes[tName] : themes[defaults.theme];
-  };
-
-  /**
-   * Add theme @tName with set of parameters @config
-   * @param tName
-   * @param config
-   */
-  self.addTheme = function (tName, config) {
-    tName = tName.trim();
-    if (!tName) throw new SCPError(SCP.errMsg.INVALID_THEME_NAME);
-
-    themes[tName] = {
-      bgColor: config.bgColor || themes[defaults.theme].bgColor
-    };
-  };
-
-  /**
-   * Edit theme @tName. @property also can be an object with parameters
-   * @param tName
-   * @param property
-   * @param value
-   */
-  self.configTheme = function (tName, property, value) {
-    if (themes.hasOwnProperty(tName)) {
-      if (arguments.length === 2 && SCP.utils.isObj(property)) {
-        SCP.utils.mapObj(property, function (propVal, propName) {
-          themes[tName][propName] = propVal;
-        });
-      } else if (arguments.length === 3) {
-        themes[tName][property] = value;
-      }
-    }
+  self.switchTheme = function(tName) {
+    self.theme = tName;
   };
 
   self.build = function () {
     // dummy
-    var template = '';
+    var tpl = '';
+    //=include ./../../particles/tpl.html */
+    self.setUpTplContainer(tpl);
   };
 
   self.render = function ($container) {
     // dummy
   };
 
-  self.theme = self.getTheme(defaults.theme);
-  self.size = self.getSize(defaults.size);
-  self.$tpl = '';
+  self.container = container;
+  self.theme = themes[0];
+  self.attach = defaults.attach;
+  self.tplContainer = document.createElement('div');
   self.colorWheel = new SCPColorWheel();
+
+  self.build();
 }
 SCPTemplate.prototype = new SCPEventDispatcher();
 

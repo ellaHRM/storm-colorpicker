@@ -59,16 +59,18 @@ SCP.utils.isObj = function (obj) {
  * Extends @parent object with children objects
  * @param parent
  * @param child
+ * @returns {Object}
  */
 SCP.utils.extends = function(parent, child) {
-  var children = Array.prototype.slice.call(arguments, 1),
-    k;
+  var children = Array.prototype.slice.call(arguments, 1);
 
   children.map(function(child) {
-    SCP.utils.mapObj(child, function(childVal) {
-      parent[k] = childVal;
+    SCP.utils.mapObj(child, function(val, prop) {
+      parent[prop] = val;
     });
   });
+
+  return parent;
 };
 
 /**

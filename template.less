@@ -1,10 +1,10 @@
 @defaultDisplay: inline-block;
 @defaultOffset: 20px;
 // medium
-@mediumHeight: 500px;
-@mediumWidth: 360px;
-@wheelMediumHeight: 300px;
-@wheelMediumWeight: 300px;
+@cpHeight: auto;
+@cpWidth: 360px;
+@wheelHeight: 300px;
+@wheelWeight: 300px;
 // end medium
 @thumbHeight: 36px;
 @thumbWidth: 16px;
@@ -19,6 +19,13 @@
 
     font-family: Arial, sans-serif;
   }
+
+  // common
+  display: @defaultDisplay;
+  padding: @defaultOffset @defaultOffset;
+  width: @cpWidth;
+  height: @cpHeight;
+  // end common
 
   &.cp-theme-dark {
     background: #3C3F41;
@@ -40,13 +47,7 @@
         }
       }
     }
-
   }
-
-  // common
-  display: @defaultDisplay;
-  padding: @defaultOffset @defaultOffset;
-  // end common
 
   // positions
   &.cp-embedded {
@@ -73,9 +74,9 @@
       top: 0;
       left: 0;
       border: solid black 1px;
-      border-radius: @wheelMediumWeight;
-      width: @wheelMediumWeight;
-      height: @wheelMediumHeight;
+      border-radius: @wheelWeight;
+      width: @wheelWeight;
+      height: @wheelHeight;
     }
 
     .cp-slider {
@@ -97,9 +98,6 @@
       }
     }
   }
-
-  width: @mediumWidth;
-  height: @mediumHeight;
 
   .cp-color-scheme {
     margin-bottom: @defaultOffset;

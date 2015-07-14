@@ -19,8 +19,9 @@ gulp.task('default', ['scripts', 'test']);
 /*********
  * watch
  *********/
-gulp.task('watch', function () {
-  return gulp.watch(config.watch, ['scripts', 'test']);
+gulp.task('watch', ['scripts'], function () {
+  //return gulp.watch(config.watch, ['scripts', 'test']);
+  return gulp.watch(config.watch, ['scripts']);
 });
 
 /*********

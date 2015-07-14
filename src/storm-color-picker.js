@@ -50,8 +50,8 @@
 
     // public
     self.opts = SCP.utils.extends(defaultOptions, options);
-    self.template = new SCPTemplate();
-    self.recent = new SCPRecentColors();
+    self.scpTemplate = new SCPTemplate(self.opts.container);
+    self.scpRecent = new SCPRecentColors();
 
     scpColorWheel.on(SCP.evt.SELECT, function () {
       self.toggle(SCP.evt.SELECT);
@@ -61,19 +61,19 @@
       self.toggle(SCP.evt.SELECTING);
     });
 
-    self.template.on(SCP.evt.BEFORE_SHOW, function() {
+    self.scpTemplate.on(SCP.evt.BEFORE_SHOW, function() {
       self.toggle(SCP.evt.BEFORE_SHOW);
     });
 
-    self.template.on(SCP.evt.AFTER_SHOW, function () {
+    self.scpTemplate.on(SCP.evt.AFTER_SHOW, function () {
       self.toggle(SCP.evt.AFTER_SHOW);
     });
 
-    self.template.on(SCP.evt.BEFORE_CLOSE, function () {
+    self.scpTemplate.on(SCP.evt.BEFORE_CLOSE, function () {
       self.toggle(SCP.evt.BEFORE_CLOSE);
     });
 
-    self.template.on(SCP.evt.AFTER_CLOSE, function () {
+    self.scpTemplate.on(SCP.evt.AFTER_CLOSE, function () {
       self.toggle(SCP.evt.AFTER_CLOSE);
     });
   }
