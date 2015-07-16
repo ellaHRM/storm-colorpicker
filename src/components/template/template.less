@@ -136,26 +136,22 @@
 
     }
   }
-}
 
-// --------------------
-// slider styles begin
-// --------------------
+  input[type="range"] {
+    .box('content');
 
-input[type="range"] {
-  .box('content');
+    &::-ms-fill-lower {
+      background: transparent;
+    }
 
-  &::-ms-fill-lower {
-    background: transparent;
+    &::-ms-tooltip {
+      display: none;
+    }
   }
 
-  &::-ms-tooltip {
-    display: none;
+  input[type="range"]:focus {
+    outline: none;
   }
-}
-
-input[type="range"]:focus {
-  outline: none;
 }
 
 // --------------
@@ -174,7 +170,7 @@ input[type="range"]:focus {
   -webkit-box-sizing: border-box;
 }
 
-.no-select {
+.no-select() {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

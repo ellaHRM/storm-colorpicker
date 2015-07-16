@@ -46,7 +46,7 @@ function SCPTemplate(container) {
   self.build = function () {
     // dummy
     var tpl = '';
-    //=include ./../../particles/tpl.html */
+    //=include ./../../components/template/tpl.html */
     self.setUpTplContainer(tpl);
   };
 
