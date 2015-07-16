@@ -2,7 +2,7 @@ This brunch consists components for "Storm colorpicker"
 
 # Slider component
 
-![](../blob/components/src/components/slider/slider.gif)
+![](../components/src/components/slider/slider.gif)
 
 ## Install
 
