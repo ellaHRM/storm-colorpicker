@@ -25,6 +25,8 @@
   //= include ./lib/modules/event-dispatcher.js
   //= include ./lib/modules/color-wheel.js
 
+  //= include ./components/slider/slider.js
+
   function StormColorPicker(options) {
     SCPEventDispatcher.call(this);
 

@@ -6,7 +6,7 @@
   <script>
     document.write('<link rel="stylesheet" href="template.css?'+Math.random()+'"/>');
   </script>
-  <link rel="stylesheet" href="./slider/slider.css"/>
+  <link rel="stylesheet" href="../slider/slider.css"/>
 </head>
 <body>
   <section class="color-picker cp-embedded cp-theme-dark">
@@ -42,8 +42,8 @@
     </header>
     <section class="cp-color-selector">
       <div class="cp-color-wheel"></div>
-      <div class="cp-slider-right cp-slider" id="vertical-slider"></div>
-      <div class="cp-slider-bottom cp-slider" id="horizontal-slider"></div>
+      <div class="cp-slider-right cp-slider"></div>
+      <div class="cp-slider-bottom cp-slider"></div>
     </section>
     <footer>
       <section class="cp-recent-colors">
@@ -53,18 +53,15 @@
       </section>
     </footer>
   </section>
-  <br/>
-  <!--<img src="colorpicker.bmp" alt="Color picker"/>-->
-  <br/>
-  <img src="colorpickerhsb.bmp" alt="Color picker"/>
-  <script src="./slider/slider.js"></script>
+
+  <script src="../slider/slider.js"></script>
   <script>
-    new Slider('#vertical-slider', {
+    new Slider('.cp-slider-right', {
       direction: 'vertical',
       caption: 'Brightness: {$n}',
       max: 255
     });
-    new Slider('#horizontal-slider', {
+    new Slider('.cp-slider-bottom', {
       direction: 'horizontal',
       caption: 'Opacity: {$n}',
       max: 255

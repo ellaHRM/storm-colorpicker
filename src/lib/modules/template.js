@@ -22,13 +22,25 @@ function SCPTemplate(container) {
   self.setUpTplContainer = function(html) {
     switch (self.attach) {
       case 'inner':
-        self.tplContainer.classList.add('cp-embedded');
-        self.tplContainer.innerHTML = html;
+        self.cpContainer.classList.add('cp-embedded');
+        self.cpContainer.innerHTML = html;
         break;
     }
 
-    self.tplContainer.classList.add('cp-theme-' + self.theme);
-    self.container.appendChild(self.tplContainer);
+    self.cpContainer.classList.add('cp-theme-' + self.theme);
+    self.container.appendChild(self.cpContainer);
+
+    // attach sliders
+    self.bSlider = new Slider(self.cpContainer.querySelector('.cp-slider-right'), {
+      direction: 'vertical',
+      caption: 'Brightness: {$n}',
+      max: 255
+    });
+    self.oSlider = new Slider(self.cpContainer.querySelector('.cp-slider-bottom'), {
+      direction: 'horizontal',
+      caption: 'Opacity: {$n}',
+      max: 255
+    });
   };
 
   /**
@@ -57,8 +69,10 @@ function SCPTemplate(container) {
   self.container = container;
   self.theme = themes[0];
   self.attach = defaults.attach;
-  self.tplContainer = document.createElement('div');
+  self.cpContainer = document.createElement('div');
   self.colorWheel = new SCPColorWheel();
+  self.bSlider = {};
+  self.oSlider = {};
 
   self.build();
 }
