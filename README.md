@@ -2,7 +2,7 @@ This brunch consists components for "Storm colorpicker"
 
 # Slider component
 
-![](https://github.com/likerRr/storm-colorpicker/blob/components/src/components/slider/slider.gif)
+![](../blob/components/src/components/slider/slider.gif)
 
 ## Install
 
