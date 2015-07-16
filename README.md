@@ -1,11 +1,8 @@
-# storm-colorpicker
-Modern colorpicker plugin inspired by PHPStorm IDE
+This brunch consists components for "Storm colorpicker"
 
 # Slider component
 
-This brunch is a part of "Storm colorpicker"
-
-![](https://github.com/likerRr/storm-colorpicker/blob/custom-slider/src/components/slider/slider.gif)
+![](https://github.com/likerRr/storm-colorpicker/blob/components/src/components/slider/slider.gif)
 
 ## Install
 
