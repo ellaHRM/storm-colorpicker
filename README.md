@@ -5,7 +5,7 @@ Modern colorpicker plugin inspired by PHPStorm IDE
 
 This brunch is a part of "Storm colorpicker"
 
-![](https://github.com/likerRr/storm-colorpicker/blob/custom-slider/slider/slider.gif)
+![](https://github.com/likerRr/storm-colorpicker/blob/custom-slider/src/components/slider/slider.gif)
 
 ## Install
 
