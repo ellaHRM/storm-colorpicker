@@ -20,8 +20,6 @@
   background-image: -moz-linear-gradient(left, #ffffff 0%, #808080 60%, #000000 100%);
   background-image: -ms-linear-gradient(left, #ffffff 0%, #808080 60%, #000000 100%);
   background-image: -o-linear-gradient(left, #ffffff 0%, #808080 60%, #000000 100%);
-  width: 300px;
-  height: 12px;
 }
 .slider.horizontal .thumb.thumb-top {
   width: 0;
@@ -52,8 +50,6 @@
   background-image: -moz-linear-gradient(top, #ffffff 0%, #808080 60%, #000000 100%);
   background-image: -ms-linear-gradient(top, #ffffff 0%, #808080 60%, #000000 100%);
   background-image: -o-linear-gradient(top, #ffffff 0%, #808080 60%, #000000 100%);
-  width: 12px;
-  height: 300px;
 }
 .slider.vertical .thumb.thumb-right {
   width: 0;

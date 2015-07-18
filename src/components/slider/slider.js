@@ -34,11 +34,17 @@
    */
   function Slider(attachTo, direction, caption) {
     var self = this,
+      // consts
       C = {
         DIR_HORIZONTAL: 'horizontal',
         DIR_VERTICAL: 'vertical',
         MIN_VALUE: 0,
-        MAX_VALUE: 100
+        MAX_VALUE: 100,
+        MIN_TRACK_HEIGHT: 6,
+        MIN_TRACK_WIDTH: 3,
+        DEFAULT_TRACK_WIDTH: 300,
+        DEFAULT_TRACK_HEIGHT: 12,
+        DEFAULT_VALUE: 0
       },
       trackRect = {},
       thumbRect = {},
@@ -51,14 +57,16 @@
 
     self.publicApi = {};
 
-    self.value = 0;
+    self.value = C.DEFAULT_VALUE;
+    self.width = C.DEFAULT_TRACK_WIDTH;
+    self.height = C.DEFAULT_TRACK_HEIGHT;
+    self.uniqueId = uniqueId;
 
     self.thumbState = {
       captured: false,
       slides: false
     };
 
-    self.uniqueId = uniqueId;
     self.subscribers = {
       change: []
     };
@@ -86,6 +94,14 @@
         // max value
         if (opts.max) {
           C.MAX_VALUE = opts.max;
+        }
+        // width
+        if (opts.width !== undefined) {
+          self.width = opts.width < C.MIN_TRACK_WIDTH ? C.MIN_TRACK_WIDTH : opts.width;
+        }
+        // height
+        if (opts.height !== undefined) {
+          self.height = opts.height < C.MIN_TRACK_HEIGHT ? C.MIN_TRACK_HEIGHT : opts.height;
         }
       }
 
@@ -123,8 +139,18 @@
      * Creates and sets up track element
      */
     self.buildTrack = function () {
+      var w = self.width + 'px',
+        h = self.height + 'px';
+
       self.$track = document.createElement('div');
       self.$track.classList.add('track');
+      if (direction === C.DIR_HORIZONTAL) {
+        self.$track.style.width = w;
+        self.$track.style.height = h;
+      } else {
+        self.$track.style.width = h;
+        self.$track.style.height = w;
+      }
     };
 
     /**
