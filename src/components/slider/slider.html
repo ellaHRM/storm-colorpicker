@@ -26,10 +26,12 @@
       caption: 'Opacity: {$n}',
       min: 0,
       max: 255,
-      thumbDirection: 'top'
+      thumbDirection: 'top',
+      width: 300,
+      height: 12
     });
     hSlider.on('change', function (val) {
-      console.log(this.hideTip());
+//      console.log(this.hideTip());
     });
 
     var vSlider = new Slider('#slider-vertical', 'vertical', 'Brightness: {$n}');
